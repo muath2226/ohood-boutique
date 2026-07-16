@@ -1,0 +1,20 @@
+# Render Blueprint — Boutique Ohood static site
+# https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: ohood-boutique
+    runtime: static
+    plan: free
+    branch: main
+    buildCommand: "true"
+    staticPublishPath: .
+    autoDeployTrigger: commit
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+    routes:
+      # SPA-style: unknown paths fall back to index (safe for multi-page later)
+      - type: rewrite
+        source: /*
+        destination: /index.html
