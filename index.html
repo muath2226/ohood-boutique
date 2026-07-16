@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="بوتيك عهود — بوتيك أزياء نسائية محتشمة في الرياض. عبايات وجلابيات وفساتين مغطاة مع توصيل في نفس اليوم داخل العاصمة."
+    />
+    <title>بوتيك عهود | أناقة محتشمة · الرياض</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/motion.css" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='80'>ع</text></svg>" />
+  </head>
+  <body class="rtl light-scene">
+    <!-- Three.js WebGL: HTML-in-canvas + physical lamp light -->
+    <canvas id="lumen-gl" aria-hidden="true"></canvas>
+
+    <!-- Intro + progress (above WebGL) -->
+    <div class="page-intro" id="pageIntro" aria-hidden="true">
+      <div class="intro-mark">عهود<span>بوتيك · الرياض</span></div>
+    </div>
+    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+    <!-- Captured into canvas texture; stays interactive via opacity:0 hit layer -->
+    <div id="site-root">
+    <!-- شريط الإعلان -->
+    <div class="announce">
+      <span data-i18n="trust.delivery">توصيل في نفس اليوم بالرياض</span>
+      &nbsp;·&nbsp;
+      شحن مجاني فوق ٤٠٠ ر.س
+      &nbsp;·&nbsp;
+      كود <span class="shimmer-text">OHOOD15</span> — خصم ١٥٪ على أول طلب
+    </div>
+
+    <!-- الهيدر -->
+    <header class="header">
+      <div class="container header-inner">
+        <div class="nav-left">
+          <button class="icon-btn menu-toggle" id="menuToggle" aria-label="القائمة">
+            <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" fill="none" stroke-width="1.5"/></svg>
+          </button>
+          <nav class="nav-desktop nav-left">
+            <a class="nav-link" href="#home" data-i18n="nav.home">الرئيسية</a>
+            <a class="nav-link" href="#shop" data-i18n="nav.shop">تسوقي</a>
+            <a class="nav-link" href="#shop" data-filter-link="abayas" data-i18n="nav.abayas">عبايات</a>
+          </nav>
+        </div>
+
+        <a href="#home" class="logo logo-ar">
+          عهود
+          <span>بوتيك · الرياض</span>
+        </a>
+
+        <div class="nav-right">
+          <nav class="nav-desktop">
+            <a class="nav-link" href="#story" data-i18n="nav.about">قصتنا</a>
+          </nav>
+          <button class="lang-toggle" id="langToggle" type="button">EN</button>
+          <button class="icon-btn" id="wishBtn" aria-label="المفضلة">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span class="badge-count" data-wish-count hidden>0</span>
+          </button>
+          <button class="icon-btn" id="cartBtn" aria-label="الحقيبة">
+            <svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L5 3H2"/></svg>
+            <span class="badge-count" data-cart-count hidden>0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- البطل -->
+      <section class="hero" id="home">
+        <div class="fx-blob b1" aria-hidden="true"></div>
+        <div class="fx-blob b2" aria-hidden="true"></div>
+        <div class="fx-blob b3" aria-hidden="true"></div>
+        <div class="sparkle-field" aria-hidden="true"></div>
+        <span class="sticker s1" data-sticker="1">new drop ✦</span>
+        <span class="sticker s2" data-sticker="2">رياض ✨</span>
+        <span class="sticker s3" data-sticker="3">محتشم وفاخر</span>
+
+        <div class="hero-content">
+          <p class="eyebrow" data-i18n="hero.eyebrow">الرياض · تأسس ٢٠٢٦</p>
+          <h1 data-i18n="hero.title">وعود من الأناقة المحتشمة</h1>
+          <p class="hero-sub" data-i18n="hero.sub">
+            عبايات وجلابيات وقصات مغطاة منتقاة بعناية لامرأة الرياض — راقية ومحافظة وصادقة في كل تفصيلة. توصيل في نفس اليوم داخل العاصمة.
+          </p>
+          <div class="hero-actions">
+            <a href="#shop" class="btn btn-primary" data-i18n="hero.cta">تسوقي المجموعة</a>
+            <a href="#shop" class="btn btn-outline" data-filter-link="abayas" data-i18n="hero.cta2">اكتشفي العبايات</a>
+          </div>
+          <div class="hero-meta">
+            <div>
+              <strong>٣س</strong>
+              <span data-hero-meta="express">توصيل سريع بالرياض</span>
+            </div>
+            <div>
+              <strong>١٤</strong>
+              <span data-hero-meta="returns">يوماً إرجاع مجاني</span>
+            </div>
+            <div>
+              <strong>ر.س</strong>
+              <span data-hero-meta="pay">عند الاستلام · تابي · تمارا</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-ornament"></div>
+          <img
+            src="https://images.pexels.com/photos/35324619/pexels-photo-35324619.jpeg?auto=compress&cs=tinysrgb&w=1200"
+            alt="بوتيك عهود — أناقة عباية محتشمة"
+          />
+          <div class="hero-card">
+            <div>
+              <p data-hero-card-title>عباية عهود المسائية</p>
+              <small data-hero-card-sub>محتشمة · موسم جديد</small>
+            </div>
+            <a href="#shop" class="btn btn-sm btn-primary" data-filter-link="abayas" data-hero-card-btn>تسوقي</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- شريط متحرك -->
+      <div class="marquee-wrap" aria-hidden="true">
+        <div class="marquee-track" id="marqueeTrack"></div>
+      </div>
+
+      <!-- شريط الثقة -->
+      <section class="trust">
+        <div class="container trust-grid">
+          <div class="trust-item">
+            <div class="trust-icon">
+              <svg viewBox="0 0 24 24"><path d="M3 7h13v10H3zM16 10h3l2 3v4h-5z"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="17.5" cy="18.5" r="1.5"/></svg>
+            </div>
+            <p data-i18n="trust.delivery">توصيل في نفس اليوم بالرياض</p>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 7h16v11H4zM8 7V5a4 4 0 0 1 8 0v2"/></svg>
+            </div>
+            <p data-i18n="trust.returns">إرجاع مجاني خلال ١٤ يوماً</p>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="1"/><path d="M3 10h18"/></svg>
+            </div>
+            <p data-i18n="trust.cod">الدفع عند الاستلام</p>
+          </div>
+          <div class="trust-item">
+            <div class="trust-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            </div>
+            <p data-i18n="trust.pay">تابي وتمارا</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- التصنيفات -->
+      <section class="section" id="categories">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow" data-static-eyebrow="collection">المجموعة</p>
+              <h2 class="section-title" data-i18n="sections.categories">تسوقي حسب الإطلالة</h2>
+            </div>
+            <a href="#shop" class="link-arrow" data-i18n="sections.viewAll">عرض الكل</a>
+          </div>
+          <div class="cat-grid" id="catGrid"></div>
+        </div>
+      </section>
+
+      <!-- المختارات -->
+      <section class="section" style="padding-top: 0">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow" data-static-eyebrow="curated">منتقاة</p>
+              <h2 class="section-title" data-i18n="sections.featured">مختارات هذا الأسبوع</h2>
+            </div>
+            <a href="#shop" class="link-arrow" data-i18n="sections.viewAll">عرض الكل</a>
+          </div>
+          <div class="product-grid" id="featuredGrid"></div>
+        </div>
+      </section>
+
+      <!-- شريط المزاج -->
+      <div class="mood-strip" aria-hidden="true">
+        <div class="mood-rail" id="moodRail"></div>
+      </div>
+
+      <!-- قسم الرياض -->
+      <section class="editorial" id="riyadh">
+        <div class="editorial-visual">
+          <img
+            src="https://images.pexels.com/photos/35324630/pexels-photo-35324630.jpeg?auto=compress&cs=tinysrgb&w=1100"
+            alt="أزياء محتشمة بأسلوب الرياض"
+          />
+        </div>
+        <div class="editorial-content">
+          <p class="eyebrow" data-static-eyebrow="capital">خدمة العاصمة</p>
+          <h2 data-i18n="sections.riyadh">صُممت لحياة الرياض</h2>
+          <p data-i18n="tagline">أناقة تحتفظ بوعودها — للمرأة الرياضيّة العصرية</p>
+          <ul class="point-list" id="riyadhPoints"></ul>
+          <a href="#shop" class="btn btn-ghost" data-shop-now>تسوقي الآن</a>
+        </div>
+      </section>
+
+      <!-- المتجر -->
+      <section class="section" id="shop">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow" data-static-eyebrow="boutique">البوتيك</p>
+              <h2 class="section-title" data-i18n="nav.shop">تسوقي</h2>
+            </div>
+          </div>
+
+          <div class="shop-toolbar">
+            <div class="filters" id="filters"></div>
+            <div class="toolbar-right">
+              <span class="results-count" id="resultsCount">٠ قطعة</span>
+              <select class="sort-select" id="sortSelect" aria-label="ترتيب"></select>
+            </div>
+          </div>
+
+          <div class="product-grid" id="shopGrid"></div>
+        </div>
+      </section>
+
+      <!-- قصتنا -->
+      <section class="section story" id="story">
+        <div class="container story-grid">
+          <div class="story-visual reveal">
+            <img
+              src="https://images.pexels.com/photos/35263626/pexels-photo-35263626.jpeg?auto=compress&cs=tinysrgb&w=900"
+              alt="بوتيك عهود — أناقة محتشمة"
+            />
+            <div class="story-float">
+              <strong>١٢</strong>
+              <span data-story-float>حيّاً نوصل لها في نفس اليوم بالرياض</span>
+            </div>
+          </div>
+          <div class="story-content reveal">
+            <p class="eyebrow" data-static-eyebrow="maison">الدار</p>
+            <h2 class="section-title" data-i18n="sections.aboutTitle">وُلدت في الرياض</h2>
+            <p data-i18n="sections.aboutBody">
+              بوتيك عهود وعدٌ بالأناقة المحتشمة. نقدّم للمرأة التي تنتقل بين المجلس والمكتب والمساء قطعاً تحترم التغطية والقيم دون التخلي عن القصّة العصرية — مصمّمة لمناخ السعودية وثقتها. كل قطعة وعد بالجودة، وكل طلب وعد بالعناية.
+            </p>
+            <a href="#shop" class="btn btn-primary" data-i18n="hero.cta">تسوقي المجموعة</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- آراء العملاء -->
+      <section class="section reviews">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow" data-static-eyebrow="community">المجتمع</p>
+              <h2 class="section-title" data-i18n="sections.reviews">محبوبة في العاصمة</h2>
+            </div>
+          </div>
+          <div class="review-grid" id="reviewGrid"></div>
+        </div>
+      </section>
+
+      <!-- النشرة -->
+      <section class="newsletter" id="contact">
+        <div class="container">
+          <p class="eyebrow" style="color: var(--gold-bright)" data-static-eyebrow="circle">عائلة عهود</p>
+          <h2 data-i18n="sections.newsletter">انضمي لعائلة عهود</h2>
+          <p data-i18n="sections.newsletterSub">
+            إصدارات محتشمة جديدة وعروض خاصة ونصائح تنسيق — نرسلها بكل ود.
+          </p>
+          <form class="news-form" id="newsForm">
+            <input
+              type="email"
+              required
+              data-i18n-placeholder="sections.emailPlaceholder"
+              placeholder="بريدك الإلكتروني"
+              aria-label="البريد الإلكتروني"
+            />
+            <button type="submit" data-i18n="sections.subscribe">اشتركي</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- التذييل -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="logo logo-ar">عهود<span>بوتيك · الرياض</span></div>
+            <p data-i18n="tagline">أناقة تحتفظ بوعودها — للمرأة الرياضيّة العصرية</p>
+            <div class="socials">
+              <a href="#" aria-label="إنستغرام">IG</a>
+              <a href="#" aria-label="تيك توك">TT</a>
+              <a href="https://wa.me/966500000000" aria-label="واتساب" target="_blank" rel="noopener">WA</a>
+            </div>
+          </div>
+          <div>
+            <h4 data-i18n="sections.footer.shop">تسوقي</h4>
+            <ul>
+              <li><a href="#shop" data-filter-link="new" data-footer-new>وصل حديثاً</a></li>
+              <li><a href="#shop" data-filter-link="abayas" data-footer-abayas>عبايات</a></li>
+              <li><a href="#shop" data-filter-link="dresses" data-footer-dresses>فساتين</a></li>
+              <li><a href="#shop" data-filter-link="accessories" data-footer-acc>إكسسوارات</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 data-i18n="sections.footer.help">المساعدة</h4>
+            <ul>
+              <li><a href="#" data-i18n="sections.footer.shipping">الشحن والتوصيل</a></li>
+              <li><a href="#" data-i18n="sections.footer.returns">الإرجاع</a></li>
+              <li><a href="#" data-i18n="sections.footer.sizeGuide">دليل المقاسات</a></li>
+              <li><a href="#" data-i18n="sections.footer.faq">الأسئلة الشائعة</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 data-i18n="sections.footer.company">الشركة</h4>
+            <ul>
+              <li><a href="#story" data-i18n="sections.footer.about">عن بوتيك عهود</a></li>
+              <li><a href="#" data-i18n="sections.footer.careers">الوظائف</a></li>
+              <li><a href="#" data-i18n="sections.footer.privacy">الخصوصية</a></li>
+              <li><a href="mailto:hello@ohood.sa">hello@ohood.sa</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span data-i18n="sections.footer.rights">© ٢٠٢٦ بوتيك عهود. الرياض، المملكة العربية السعودية.</span>
+          <span data-i18n="sections.footer.vat">جاهز لضريبة القيمة المضافة · سجل تجاري</span>
+        </div>
+      </div>
+    </footer>
+    </div><!-- /#site-root -->
+
+    <!-- Chrome outside capture — always visible above WebGL -->
+    <!-- قائمة الجوال -->
+    <div class="mobile-nav" id="mobileNav">
+      <div class="mobile-nav-head">
+        <div class="logo logo-ar">عهود<span>بوتيك · الرياض</span></div>
+        <button class="icon-btn" id="mobileClose" aria-label="إغلاق">
+          <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" fill="none" stroke-width="1.5"/></svg>
+        </button>
+      </div>
+      <nav>
+        <a href="#home" data-close-drawer data-i18n="nav.home">الرئيسية</a>
+        <a href="#shop" data-close-drawer data-i18n="nav.shop">تسوقي</a>
+        <a href="#shop" data-filter-link="abayas" data-close-drawer data-i18n="nav.abayas">عبايات</a>
+        <a href="#story" data-close-drawer data-i18n="nav.about">قصتنا</a>
+        <a href="#contact" data-close-drawer data-i18n="nav.contact">تواصلي</a>
+      </nav>
+    </div>
+
+    <!-- واتساب -->
+    <a
+      class="wa-float"
+      href="https://wa.me/966500000000?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20%D8%A8%D9%88%D8%AA%D9%8A%D9%83%20%D8%B9%D9%87%D9%88%D8%AF%20%E2%80%94%20%D8%A3%D8%AD%D8%AA%D8%A7%D8%AC%20%D9%85%D8%B3%D8%A7%D8%B9%D8%AF%D8%A9%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%AA%D9%86%D8%B3%D9%8A%D9%82"
+      target="_blank"
+      rel="noopener"
+      aria-label="تنسيق عبر واتساب"
+    >
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+
+    <div class="overlay" id="overlay"></div>
+
+    <aside class="drawer" id="cartDrawer" aria-label="حقيبة التسوق">
+      <div class="drawer-head">
+        <h3 data-i18n="sections.bag">الحقيبة</h3>
+        <button class="icon-btn" data-close-drawer aria-label="إغلاق">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" fill="none" stroke-width="1.5"/></svg>
+        </button>
+      </div>
+      <div class="drawer-body" id="cartBody"></div>
+      <div class="drawer-foot" id="cartFoot" hidden>
+        <p class="free-ship-note" id="freeShipNote"></p>
+        <div class="cart-total-row grand">
+          <span data-i18n="sections.total">الإجمالي</span>
+          <span id="cartTotal">٠ ر.س</span>
+        </div>
+        <button class="btn btn-primary btn-block" id="checkoutBtn" data-i18n="sections.checkout">إتمام الطلب</button>
+      </div>
+    </aside>
+
+    <aside class="drawer" id="wishDrawer" aria-label="المفضلة">
+      <div class="drawer-head">
+        <h3 data-i18n="sections.wishlist">المفضلة</h3>
+        <button class="icon-btn" data-close-drawer aria-label="إغلاق">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" fill="none" stroke-width="1.5"/></svg>
+        </button>
+      </div>
+      <div class="drawer-body" id="wishBody"></div>
+    </aside>
+
+    <div class="modal" id="quickModal" role="dialog" aria-modal="true">
+      <div class="modal-backdrop"></div>
+      <div class="modal-panel">
+        <button class="modal-close" id="qvClose" aria-label="إغلاق">✕</button>
+        <div class="modal-media">
+          <img id="qvImage" src="" alt="" />
+        </div>
+        <div class="modal-info">
+          <p class="eyebrow" data-brand-eyebrow>عهود</p>
+          <h2 id="qvName"></h2>
+          <div class="price" id="qvPrice"></div>
+          <p class="desc" id="qvDesc"></p>
+          <p class="option-label" data-i18n="sections.color">اللون</p>
+          <div class="color-options" id="qvColors"></div>
+          <p class="option-label" data-i18n="sections.size">المقاس</p>
+          <div class="size-options" id="qvSizes"></div>
+          <div class="modal-actions">
+            <button class="btn btn-primary btn-block" id="qvAdd" data-i18n="sections.addToBag">أضيفي إلى الحقيبة</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <script src="js/products.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/motion.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
+        }
+      }
+    </script>
+    <script type="module" src="js/lumen-three.js"></script>
+  </body>
+</html>

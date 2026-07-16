@@ -1,0 +1,1618 @@
+/* ============================================
+   بوتيك عهود — Motion & personality layer
+   Playful luxury · scroll magic · weird-cute
+   ============================================ */
+
+/* Reduced motion respect */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .cursor-dot,
+  .cursor-ring,
+  .fx-blob,
+  .sparkle-field {
+    display: none !important;
+  }
+}
+
+/* ---------- Scroll progress ---------- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  z-index: 10001;
+  background: linear-gradient(90deg, var(--gold), var(--rose-deep), var(--gold-bright));
+  box-shadow: 0 0 12px rgba(184, 149, 108, 0.6);
+  transition: width 0.08s linear;
+}
+
+/* ---------- Custom cursor (desktop) ---------- */
+@media (hover: hover) and (pointer: fine) {
+  body.has-cursor {
+    cursor: none;
+  }
+  body.has-cursor a,
+  body.has-cursor button,
+  body.has-cursor .product-card,
+  body.has-cursor .filter-chip,
+  body.has-cursor .cat-card,
+  body.has-cursor input,
+  body.has-cursor select {
+    cursor: none;
+  }
+
+  .cursor-dot,
+  .cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 10000;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: difference;
+  }
+
+  .cursor-dot {
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    transition: width 0.25s var(--ease), height 0.25s var(--ease), background 0.25s;
+  }
+
+  .cursor-ring {
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    transition: width 0.35s var(--ease), height 0.35s var(--ease), border-color 0.25s, opacity 0.25s;
+  }
+
+  body.cursor-hover .cursor-dot {
+    width: 14px;
+    height: 14px;
+    background: var(--gold-bright);
+    mix-blend-mode: normal;
+  }
+
+  body.cursor-hover .cursor-ring {
+    width: 64px;
+    height: 64px;
+    border-color: var(--gold);
+    mix-blend-mode: normal;
+  }
+
+  body.cursor-click .cursor-ring {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* ---------- Page intro flash ---------- */
+.page-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  background: var(--espresso);
+  display: grid;
+  place-items: center;
+  transition: opacity 0.7s var(--ease), visibility 0.7s;
+}
+
+.page-intro.done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.page-intro .intro-mark {
+  font-family: var(--font-ar);
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-weight: 600;
+  color: var(--ivory);
+  letter-spacing: 0.12em;
+  animation: introPop 0.9s var(--ease) both;
+}
+
+.page-intro .intro-mark span {
+  display: block;
+  text-align: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  color: var(--gold-bright);
+  margin-top: 0.75rem;
+  font-weight: 400;
+  opacity: 0;
+  animation: rise 0.6s 0.35s var(--ease) both;
+}
+
+@keyframes introPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) rotate(-2deg);
+    filter: blur(8px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.04) rotate(0.5deg);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+/* ---------- Floating blobs ---------- */
+.fx-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.45;
+  animation: blobFloat 12s ease-in-out infinite;
+}
+
+.fx-blob.b1 {
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(196, 160, 154, 0.55), transparent 70%);
+  top: 8%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.fx-blob.b2 {
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(184, 149, 108, 0.4), transparent 70%);
+  bottom: 15%;
+  right: 8%;
+  animation-delay: -4s;
+  animation-duration: 15s;
+}
+
+.fx-blob.b3 {
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(232, 213, 193, 0.7), transparent 70%);
+  top: 45%;
+  right: 35%;
+  animation-delay: -7s;
+  animation-duration: 10s;
+}
+
+@keyframes blobFloat {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -25px) scale(1.08);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.94);
+  }
+}
+
+/* ---------- Marquee strip ---------- */
+.marquee-wrap {
+  overflow: hidden;
+  background: var(--espresso);
+  color: var(--ivory);
+  border-block: 1px solid rgba(212, 180, 131, 0.25);
+  padding: 0.85rem 0;
+  position: relative;
+}
+
+.marquee-wrap::before,
+.marquee-wrap::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.marquee-wrap::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--espresso), transparent);
+}
+
+.marquee-wrap::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--espresso), transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 0;
+  animation: marquee 32s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.marquee-track span {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding-inline: 1.25rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgba(247, 242, 235, 0.88);
+}
+
+.marquee-track .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold-bright);
+  box-shadow: 0 0 10px var(--gold);
+  flex-shrink: 0;
+}
+
+.marquee-track .spark {
+  color: var(--gold-bright);
+  font-size: 0.9rem;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+body.rtl .marquee-track {
+  animation-name: marqueeRtl;
+}
+
+@keyframes marqueeRtl {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(50%);
+  }
+}
+
+/* ---------- Floating stickers ---------- */
+.sticker {
+  position: absolute;
+  z-index: 3;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--espresso);
+  box-shadow: 0 10px 30px rgba(28, 20, 16, 0.12);
+  border: 1px solid var(--line);
+  animation: stickerWiggle 4.5s ease-in-out infinite;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.sticker.s1 {
+  top: 12%;
+  left: 6%;
+  rotate: -8deg;
+  background: linear-gradient(135deg, #fff8f0, #f5e6dc);
+  animation-delay: 0s;
+}
+
+.sticker.s2 {
+  top: 28%;
+  right: 4%;
+  rotate: 6deg;
+  background: var(--espresso);
+  color: var(--gold-bright);
+  border-color: transparent;
+  animation-delay: -1.5s;
+}
+
+.sticker.s3 {
+  bottom: 22%;
+  left: 10%;
+  rotate: 4deg;
+  background: #f3e8e6;
+  color: var(--rose-deep);
+  animation-delay: -2.8s;
+}
+
+body.rtl .sticker.s1 {
+  left: auto;
+  right: 6%;
+  rotate: 8deg;
+}
+
+body.rtl .sticker.s2 {
+  right: auto;
+  left: 4%;
+  rotate: -6deg;
+}
+
+body.rtl .sticker.s3 {
+  left: auto;
+  right: 10%;
+  rotate: -4deg;
+}
+
+@keyframes stickerWiggle {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translateY(-10px) rotate(calc(var(--r, 0deg) + 2deg));
+  }
+}
+
+/* ---------- Hero text magic ---------- */
+.hero {
+  position: relative;
+  isolation: isolate;
+}
+
+.hero-content {
+  z-index: 2;
+}
+
+.hero h1 {
+  position: relative;
+}
+
+.hero h1 .word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.hero h1 .word > span {
+  display: inline-block;
+  animation: wordUp 0.85s var(--ease) both;
+}
+
+@keyframes wordUp {
+  from {
+    opacity: 0;
+    transform: translateY(110%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-visual {
+  overflow: hidden;
+}
+
+.hero-visual img {
+  transition: transform 1.2s var(--ease);
+  will-change: transform;
+}
+
+.hero-visual:hover img {
+  transform: scale(1.05);
+}
+
+.hero-ornament {
+  animation: spinSlow 28s linear infinite;
+  border-style: dashed !important;
+  border-width: 1.5px !important;
+}
+
+.hero-ornament::after {
+  content: "✦";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--gold);
+  font-size: 1.1rem;
+  animation: pulseGlow 2.4s ease-in-out infinite;
+}
+
+@keyframes spinSlow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.25);
+  }
+}
+
+.hero-card {
+  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease);
+  animation: floatY 5s ease-in-out infinite !important;
+}
+
+.hero-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: var(--shadow-lg);
+}
+
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Magnetic-ish buttons */
+.btn {
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), background 0.35s, color 0.35s, border-color 0.35s;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--espresso) 0%, #2e221c 50%, var(--espresso) 100%);
+  background-size: 200% 200%;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 60%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.6s var(--ease);
+}
+
+.btn-primary:hover::after {
+  transform: translateX(120%);
+}
+
+.btn-primary:hover {
+  background-position: 100% 50%;
+  box-shadow: 0 12px 36px rgba(28, 20, 16, 0.25);
+  transform: translateY(-2px);
+}
+
+.btn-outline:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(28, 20, 16, 0.1);
+}
+
+/* ---------- Logo pulse ---------- */
+.logo {
+  transition: transform 0.4s var(--ease), color 0.3s;
+}
+
+.logo:hover {
+  transform: scale(1.04);
+}
+
+.logo span {
+  transition: letter-spacing 0.4s var(--ease), color 0.3s;
+}
+
+.logo:hover span {
+  letter-spacing: 0.45em;
+  color: var(--rose-deep);
+}
+
+.logo.logo-ar:hover span {
+  letter-spacing: 0.2em;
+}
+
+/* ---------- Category cards — weird lift ---------- */
+.cat-card {
+  transition: transform 0.55s var(--ease), box-shadow 0.55s var(--ease);
+  border-radius: 4px 28px 4px 28px;
+}
+
+.cat-card:nth-child(even) {
+  border-radius: 28px 4px 28px 4px;
+}
+
+.cat-card:hover {
+  transform: translateY(-10px) rotate(-1deg);
+  box-shadow: 0 24px 50px rgba(28, 20, 16, 0.18);
+  z-index: 2;
+}
+
+.cat-card:nth-child(even):hover {
+  transform: translateY(-10px) rotate(1deg);
+}
+
+.cat-card-label h3 {
+  transition: transform 0.4s var(--ease);
+}
+
+.cat-card:hover .cat-card-label h3 {
+  transform: translateY(-4px);
+}
+
+/* ---------- Product cards — 3D + glow ---------- */
+.product-card {
+  transition: transform 0.45s var(--ease);
+  transform-style: preserve-3d;
+  perspective: 800px;
+}
+
+.product-card:hover {
+  z-index: 3;
+}
+
+.product-media {
+  border-radius: 6px 22px 6px 22px;
+  transition: box-shadow 0.45s var(--ease), transform 0.45s var(--ease);
+}
+
+.product-card:nth-child(even) .product-media {
+  border-radius: 22px 6px 22px 6px;
+}
+
+.product-card:hover .product-media {
+  box-shadow:
+    0 20px 40px rgba(28, 20, 16, 0.14),
+    0 0 0 1px rgba(184, 149, 108, 0.25);
+}
+
+.product-badge {
+  animation: badgePop 0.6s var(--ease) both;
+  transition: transform 0.3s var(--ease);
+}
+
+.product-card:hover .product-badge {
+  transform: scale(1.08) rotate(-3deg);
+}
+
+@keyframes badgePop {
+  from {
+    opacity: 0;
+    transform: scale(0.5) rotate(-12deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+.product-info h3 {
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.product-card:hover .product-info h3 {
+  color: var(--rose-deep);
+  transform: translateX(-2px);
+}
+
+body.rtl .product-card:hover .product-info h3 {
+  transform: translateX(2px);
+}
+
+.wish-btn {
+  transition: transform 0.35s var(--ease), background 0.3s !important;
+}
+
+.wish-btn:hover {
+  transform: scale(1.12) !important;
+}
+
+.wish-btn.active {
+  animation: heartBeat 0.55s var(--ease);
+}
+
+@keyframes heartBeat {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.35);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  75% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Stagger product grid appear */
+.product-card.reveal {
+  transition:
+    opacity 0.7s var(--ease),
+    transform 0.7s var(--ease);
+}
+
+.product-card.reveal:nth-child(1) {
+  transition-delay: 0.02s;
+}
+.product-card.reveal:nth-child(2) {
+  transition-delay: 0.08s;
+}
+.product-card.reveal:nth-child(3) {
+  transition-delay: 0.14s;
+}
+.product-card.reveal:nth-child(4) {
+  transition-delay: 0.2s;
+}
+.product-card.reveal:nth-child(5) {
+  transition-delay: 0.26s;
+}
+.product-card.reveal:nth-child(6) {
+  transition-delay: 0.32s;
+}
+.product-card.reveal:nth-child(7) {
+  transition-delay: 0.38s;
+}
+.product-card.reveal:nth-child(8) {
+  transition-delay: 0.44s;
+}
+
+/* ---------- Filter chips bounce ---------- */
+.filter-chip {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s var(--ease), background 0.3s, color 0.3s, border-color 0.3s !important;
+}
+
+.filter-chip:hover {
+  transform: translateY(-3px) scale(1.03);
+}
+
+.filter-chip.active {
+  animation: chipPop 0.4s var(--ease);
+}
+
+@keyframes chipPop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ---------- Trust items float in ---------- */
+.trust-item {
+  transition: transform 0.35s var(--ease);
+}
+
+.trust-item:hover {
+  transform: translateY(-4px);
+}
+
+.trust-icon {
+  transition: transform 0.45s var(--ease), border-color 0.3s, background 0.3s;
+}
+
+.trust-item:hover .trust-icon {
+  transform: rotate(-8deg) scale(1.1);
+  border-color: var(--gold);
+  background: rgba(184, 149, 108, 0.08);
+}
+
+/* ---------- Editorial glitch-ish gold line ---------- */
+.editorial-content h2 {
+  position: relative;
+}
+
+.editorial-content h2::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 2px;
+  margin-top: 1rem;
+  background: linear-gradient(90deg, var(--gold-bright), transparent);
+  transition: width 1s var(--ease);
+}
+
+.editorial.in-view h2::after,
+.editorial:hover h2::after {
+  width: 120px;
+}
+
+/* ---------- Review cards shuffle feel ---------- */
+.review-card:nth-child(1) {
+  rotate: -0.8deg;
+}
+.review-card:nth-child(2) {
+  rotate: 0.6deg;
+  margin-top: 1rem;
+}
+.review-card:nth-child(3) {
+  rotate: -0.4deg;
+}
+
+.review-card:hover {
+  rotate: 0deg !important;
+}
+
+.stars {
+  animation: starTwinkle 2.5s ease-in-out infinite;
+}
+
+.review-card:nth-child(2) .stars {
+  animation-delay: 0.4s;
+}
+.review-card:nth-child(3) .stars {
+  animation-delay: 0.8s;
+}
+
+@keyframes starTwinkle {
+  0%,
+  100% {
+    opacity: 0.75;
+    letter-spacing: 0.15em;
+  }
+  50% {
+    opacity: 1;
+    letter-spacing: 0.22em;
+  }
+}
+
+/* ---------- Newsletter glow ---------- */
+.newsletter {
+  position: relative;
+  overflow: hidden;
+}
+
+.newsletter::before {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(184, 149, 108, 0.25), transparent 70%);
+  top: -120px;
+  right: -80px;
+  animation: blobFloat 14s ease-in-out infinite;
+}
+
+.news-form {
+  transition: box-shadow 0.4s var(--ease), border-color 0.4s;
+}
+
+.news-form:focus-within {
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 0 4px rgba(184, 149, 108, 0.2);
+}
+
+.news-form button {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------- WhatsApp bounce + ring ---------- */
+.wa-float {
+  animation: waBounce 3s ease-in-out infinite;
+}
+
+.wa-float::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(37, 211, 102, 0.45);
+  animation: ringPulse 2s ease-out infinite;
+}
+
+@keyframes waBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes ringPulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+.wa-float:hover {
+  animation: none;
+  transform: scale(1.1) rotate(-8deg);
+}
+
+/* ---------- Drawer / modal entrances ---------- */
+.drawer {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.modal-panel {
+  animation: none;
+  transform: scale(0.94) translateY(20px);
+  opacity: 0;
+  transition: transform 0.45s var(--ease), opacity 0.45s var(--ease);
+}
+
+.modal.open .modal-panel {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+/* ---------- Mood strip (horizontal vibes) ---------- */
+.mood-strip {
+  padding: 2.5rem 0;
+  background: linear-gradient(180deg, var(--cream), var(--ivory), var(--cream));
+  overflow: hidden;
+}
+
+.mood-rail {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  animation: moodScroll 40s linear infinite;
+  padding-inline: 1rem;
+}
+
+.mood-rail:hover {
+  animation-play-state: paused;
+}
+
+.mood-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1.35rem;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px rgba(28, 20, 16, 0.05);
+  transition: transform 0.35s var(--ease), border-color 0.3s, background 0.3s;
+}
+
+.mood-chip:hover {
+  transform: scale(1.06) rotate(-1deg);
+  border-color: var(--gold);
+  background: #fff9f2;
+}
+
+.mood-chip em {
+  font-style: normal;
+  color: var(--gold);
+  font-size: 1rem;
+}
+
+@keyframes moodScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+body.rtl .mood-rail {
+  animation-name: moodScrollRtl;
+}
+
+@keyframes moodScrollRtl {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(50%);
+  }
+}
+
+/* ---------- Toast upgrade ---------- */
+.toast {
+  border-radius: 999px !important;
+  padding: 0.95rem 1.6rem !important;
+  box-shadow: 0 16px 40px rgba(28, 20, 16, 0.25) !important;
+  border: 1px solid rgba(212, 180, 131, 0.35);
+  backdrop-filter: blur(8px);
+}
+
+.toast.show {
+  animation: toastIn 0.45s var(--ease);
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(24px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+/* ---------- Heart / spark burst ---------- */
+.fx-burst {
+  position: fixed;
+  pointer-events: none;
+  z-index: 15000;
+  font-size: 1rem;
+  animation: burstFly 0.9s var(--ease) forwards;
+}
+
+@keyframes burstFly {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.6) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(1.2) rotate(var(--rot));
+  }
+}
+
+/* ---------- Icon buttons micro ---------- */
+.icon-btn {
+  transition: transform 0.3s var(--ease), background 0.3s !important;
+}
+
+.icon-btn:hover {
+  transform: scale(1.08);
+}
+
+.icon-btn:active {
+  transform: scale(0.92);
+}
+
+.badge-count {
+  animation: badgePing 0.45s var(--ease);
+}
+
+@keyframes badgePing {
+  0% {
+    transform: scale(0);
+  }
+  60% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ---------- Section titles underline grow ---------- */
+.section-title {
+  position: relative;
+  display: inline-block;
+}
+
+.section-head .section-title::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  inset-inline-start: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  transition: width 0.8s var(--ease);
+}
+
+.section-head.in-view .section-title::after {
+  width: 55%;
+}
+
+/* ---------- Link arrow dance ---------- */
+.link-arrow {
+  transition: gap 0.3s var(--ease), transform 0.3s var(--ease), border-color 0.25s;
+}
+
+.link-arrow:hover {
+  gap: 0.85rem;
+  transform: translateX(-3px);
+}
+
+body:not(.rtl) .link-arrow:hover {
+  transform: translateX(3px);
+}
+
+/* ---------- Header glass intensify on scroll ---------- */
+.header {
+  transition: box-shadow 0.3s ease, background 0.35s ease, backdrop-filter 0.35s;
+}
+
+.header.scrolled {
+  background: rgba(250, 247, 242, 0.94) !important;
+  backdrop-filter: blur(20px) saturate(1.2);
+}
+
+/* ---------- Sparkle field near hero ---------- */
+.sparkle-field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--gold-bright);
+  border-radius: 50%;
+  opacity: 0;
+  animation: sparkle 3.5s ease-in-out infinite;
+  box-shadow: 0 0 8px var(--gold);
+}
+
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  40% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  70% {
+    opacity: 0.3;
+    transform: scale(0.6);
+  }
+}
+
+/* ---------- Cart bounce when item added ---------- */
+.icon-btn.bump {
+  animation: cartBump 0.5s var(--ease);
+}
+
+@keyframes cartBump {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.2) rotate(-8deg);
+  }
+  60% {
+    transform: scale(0.95) rotate(4deg);
+  }
+}
+
+/* ---------- Mobile: tone down heavy effects ---------- */
+@media (max-width: 900px) {
+  .sticker {
+    display: none;
+  }
+  .fx-blob {
+    opacity: 0.28;
+    filter: blur(40px);
+  }
+  .cat-card,
+  .cat-card:nth-child(even) {
+    border-radius: 12px;
+  }
+  .review-card {
+    rotate: 0deg !important;
+    margin-top: 0 !important;
+  }
+  .hero-ornament {
+    width: 90px;
+    height: 90px;
+  }
+}
+
+/* ---------- Announce bar shimmer text ---------- */
+.announce {
+  overflow: hidden;
+  position: relative;
+}
+
+.announce span {
+  position: relative;
+}
+
+.announce .shimmer-text {
+  background: linear-gradient(
+    90deg,
+    var(--gold-bright) 0%,
+    #fff 40%,
+    var(--gold-bright) 80%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  animation: shimmerText 3s linear infinite;
+}
+
+@keyframes shimmerText {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* ---------- Skeleton shimmer for polish ---------- */
+.product-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.12) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+.product-card:hover .product-media::after {
+  animation: mediaShine 0.9s var(--ease);
+}
+
+@keyframes mediaShine {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* =========================================================
+   LUMEN — Three.js + HTML-in-canvas
+   Physical SpotLight on a canvas texture of #site-root.
+   ========================================================= */
+
+/* Dark ambient stage (matches capture background) */
+body.light-scene {
+  background: #0c0a08;
+  color: #e8dfd4;
+  --cream: #12100e;
+  --ivory: #e8dfd4;
+  --ivory-deep: #1a1612;
+  --sand: #3a322a;
+  --ink: #f2ebe3;
+  --muted: #9a8b7c;
+  --line: rgba(232, 223, 212, 0.1);
+  --white: #1a1612;
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+
+body.light-scene::before {
+  opacity: 0.04;
+  mix-blend-mode: soft-light;
+}
+
+/*
+  WebGL: lamp + dark veil only (transparent clear).
+  Real #site-root stays visible underneath = full resolution + original colors.
+*/
+#lumen-gl {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.55s var(--ease);
+  background: transparent;
+}
+
+body.lumen-ready #lumen-gl {
+  opacity: 1;
+}
+
+/* Native DOM always sharp — never hidden for capture */
+body.lumen-webgl #site-root,
+body.lumen-webgl.lumen-ready #site-root,
+body.lumen-webgl.lumen-dom-live #site-root {
+  opacity: 1 !important;
+}
+
+/* Reduced motion: no WebGL */
+@media (prefers-reduced-motion: reduce) {
+  #lumen-gl {
+    display: none !important;
+  }
+}
+
+/* ---- Theme restyle for dark light-scene ---- */
+
+body.light-scene .header {
+  background: rgba(12, 10, 8, 0.55) !important;
+  border-bottom-color: rgba(212, 180, 131, 0.12);
+  backdrop-filter: blur(18px) saturate(1.1);
+}
+
+body.light-scene .header.scrolled {
+  background: rgba(12, 10, 8, 0.78) !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+body.light-scene .nav-link {
+  color: rgba(232, 223, 212, 0.78);
+}
+
+body.light-scene .nav-link:hover,
+body.light-scene .nav-link.active {
+  color: var(--gold-bright);
+}
+
+body.light-scene .logo {
+  color: #f5efe6;
+}
+
+body.light-scene .icon-btn:hover {
+  background: rgba(255, 244, 220, 0.08);
+}
+
+body.light-scene .announce {
+  background: #080605;
+  border-bottom: 1px solid rgba(212, 180, 131, 0.1);
+}
+
+body.light-scene .hero {
+  background: transparent;
+}
+
+body.light-scene .hero h1 {
+  color: #f7f0e6;
+  text-shadow: none;
+}
+
+body.light-scene .hero h1 .word > span {
+  background: linear-gradient(
+    105deg,
+    #f5efe6 0%,
+    #d4b483 38%,
+    #c4a09a 62%,
+    #f0d4a8 100%
+  );
+  background-size: 180% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: wordUp 0.85s var(--ease) both, lumenTextShift 8s ease-in-out infinite;
+}
+
+@keyframes lumenTextShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+body.light-scene .hero-sub,
+body.light-scene .hero-meta span {
+  color: rgba(232, 223, 212, 0.62);
+}
+
+body.light-scene .hero-meta strong {
+  color: var(--gold-bright);
+}
+
+body.light-scene .btn-primary {
+  background: linear-gradient(135deg, #d4b483 0%, #b8956c 50%, #9a6f68 100%);
+  background-size: 200% 200%;
+  color: #1c1410;
+  border: none;
+  box-shadow: 0 8px 28px rgba(184, 149, 108, 0.35);
+}
+
+body.light-scene .btn-primary:hover {
+  background-position: 100% 50%;
+  box-shadow: 0 14px 40px rgba(212, 180, 131, 0.45);
+}
+
+body.light-scene .btn-outline {
+  border-color: rgba(232, 223, 212, 0.35);
+  color: #f2ebe3;
+}
+
+body.light-scene .btn-outline:hover {
+  background: rgba(255, 244, 220, 0.1);
+  color: #fff;
+  border-color: var(--gold-bright);
+}
+
+body.light-scene .hero-card {
+  background: rgba(20, 16, 12, 0.72);
+  border: 1px solid rgba(212, 180, 131, 0.22);
+  color: #f2ebe3;
+  backdrop-filter: blur(12px);
+}
+
+body.light-scene .hero-card small {
+  color: rgba(232, 223, 212, 0.55);
+}
+
+body.light-scene .fx-blob {
+  opacity: 0.2;
+  mix-blend-mode: screen;
+}
+
+body.light-scene .sticker {
+  background: rgba(26, 22, 18, 0.9);
+  color: var(--gold-bright);
+  border-color: rgba(212, 180, 131, 0.25);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+body.light-scene .sticker.s2 {
+  background: #1c1410;
+  color: var(--gold-bright);
+}
+
+body.light-scene .marquee-wrap {
+  background: #080605;
+  border-block-color: rgba(212, 180, 131, 0.15);
+}
+
+body.light-scene .marquee-wrap::before {
+  background: linear-gradient(90deg, #080605, transparent);
+}
+
+body.light-scene .marquee-wrap::after {
+  background: linear-gradient(270deg, #080605, transparent);
+}
+
+body.light-scene .trust {
+  background: transparent;
+  border-color: rgba(212, 180, 131, 0.1);
+}
+
+body.light-scene .trust-item p {
+  color: rgba(232, 223, 212, 0.75);
+}
+
+body.light-scene .trust-icon {
+  border-color: rgba(212, 180, 131, 0.2);
+  background: rgba(255, 244, 220, 0.04);
+  color: var(--gold-bright);
+}
+
+body.light-scene .section-title {
+  color: #f5efe6;
+}
+
+body.light-scene .product-card,
+body.light-scene .cat-card {
+  color: #e8dfd4;
+}
+
+body.light-scene .product-media {
+  background: #1a1612;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+body.light-scene .cat-card {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+body.light-scene .product-info,
+body.light-scene .wish-btn,
+body.light-scene .product-actions .btn,
+body.light-scene .product-actions button {
+  background: rgba(22, 18, 14, 0.92);
+  color: #e8dfd4;
+  border-color: rgba(212, 180, 131, 0.15);
+}
+
+body.light-scene .product-badge {
+  background: #1c1410;
+  color: var(--gold-bright);
+}
+
+body.light-scene .product-info h3 {
+  color: #f2ebe3;
+}
+
+body.light-scene .product-card:hover .product-info h3 {
+  color: var(--gold-bright);
+}
+
+body.light-scene .price {
+  color: var(--gold-bright);
+}
+
+body.light-scene .filter-chip {
+  background: rgba(255, 244, 220, 0.04);
+  border-color: rgba(212, 180, 131, 0.18);
+  color: rgba(232, 223, 212, 0.8);
+}
+
+body.light-scene .filter-chip:hover,
+body.light-scene .filter-chip.active {
+  background: rgba(212, 180, 131, 0.18);
+  border-color: var(--gold);
+  color: #fff8ec;
+}
+
+body.light-scene .sort-select {
+  background: rgba(20, 16, 12, 0.9);
+  border-color: rgba(212, 180, 131, 0.2);
+  color: #e8dfd4;
+}
+
+body.light-scene .mood-strip {
+  background: linear-gradient(180deg, #0c0a08, #12100e, #0c0a08);
+}
+
+body.light-scene .mood-chip {
+  background: rgba(26, 22, 18, 0.9);
+  border-color: rgba(212, 180, 131, 0.15);
+  color: #e8dfd4;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+body.light-scene .mood-chip:hover {
+  background: rgba(40, 32, 24, 0.95);
+  border-color: var(--gold);
+}
+
+body.light-scene .editorial {
+  background: #0a0806;
+}
+
+body.light-scene .editorial-content h2,
+body.light-scene .editorial-content p {
+  color: #e8dfd4;
+}
+
+body.light-scene .point-list li {
+  color: rgba(232, 223, 212, 0.75);
+}
+
+body.light-scene .story {
+  background: transparent;
+}
+
+body.light-scene .story-float {
+  background: rgba(20, 16, 12, 0.88);
+  border: 1px solid rgba(212, 180, 131, 0.2);
+  color: #f2ebe3;
+}
+
+body.light-scene .review-card {
+  background: rgba(22, 18, 14, 0.85);
+  border: 1px solid rgba(212, 180, 131, 0.12);
+  color: #e8dfd4;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+body.light-scene .newsletter {
+  background: radial-gradient(ellipse at 50% 0%, #1a1410 0%, #0a0806 70%);
+  color: #f2ebe3;
+}
+
+body.light-scene .news-form {
+  background: rgba(20, 16, 12, 0.8);
+  border-color: rgba(212, 180, 131, 0.25);
+}
+
+body.light-scene .news-form input {
+  color: #f2ebe3;
+}
+
+body.light-scene .news-form input::placeholder {
+  color: rgba(232, 223, 212, 0.4);
+}
+
+body.light-scene .footer {
+  background: #080605;
+  color: rgba(232, 223, 212, 0.7);
+  border-top: 1px solid rgba(212, 180, 131, 0.1);
+}
+
+body.light-scene .footer h4 {
+  color: var(--gold-bright);
+}
+
+body.light-scene .footer a:hover {
+  color: var(--gold-bright);
+}
+
+body.light-scene .drawer {
+  background: #12100e;
+  color: #e8dfd4;
+  border-color: rgba(212, 180, 131, 0.12);
+}
+
+body.light-scene .modal-panel {
+  background: #14110e;
+  color: #e8dfd4;
+  border: 1px solid rgba(212, 180, 131, 0.15);
+}
+
+body.light-scene .toast {
+  background: rgba(20, 16, 12, 0.92) !important;
+  color: #f2ebe3;
+}
+
+body.light-scene .mobile-nav {
+  background: #12100e;
+  color: #e8dfd4;
+}
+
+body.light-scene .lang-toggle {
+  color: var(--gold-bright);
+  border-color: rgba(212, 180, 131, 0.3);
+}
+
+body.light-scene .results-count {
+  color: rgba(232, 223, 212, 0.55);
+}
+
+body.light-scene .link-arrow {
+  color: var(--gold-bright);
+}
+
+/* Drawers / modal / WA above WebGL so UI stays solid & usable */
+body.light-scene .drawer,
+body.light-scene .modal,
+body.light-scene .overlay,
+body.light-scene .wa-float,
+body.light-scene .toast,
+body.light-scene .mobile-nav,
+body.light-scene .page-intro,
+body.light-scene .scroll-progress {
+  z-index: 300;
+}
+
+body.light-scene .cursor-dot,
+body.light-scene .cursor-ring {
+  z-index: 160;
+  mix-blend-mode: difference;
+}
+
+body.light-scene.cursor-hover .cursor-dot {
+  background: var(--gold-bright);
+  mix-blend-mode: normal;
+}
+
+body.light-scene.cursor-hover .cursor-ring {
+  border-color: var(--gold-bright);
+  mix-blend-mode: normal;
+}
