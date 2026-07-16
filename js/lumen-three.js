@@ -231,7 +231,7 @@ ready(() => {
   glowSprite.position.set(0, -30, 16);
   lamp.add(glowSprite);
 
-  /* ----- motion ----- */
+  /* ----- motion (auto drift only — no mouse/touch follow) ----- */
   const state = {
     tx: 0,
     ty: H * 0.3,
@@ -241,8 +241,6 @@ ready(() => {
     vy: { v: 0 },
     tilt: 0,
     vTilt: { v: 0 },
-    hasPointer: false,
-    lastMove: performance.now(),
     t0: performance.now(),
     py: 0,
   };
@@ -253,46 +251,7 @@ ready(() => {
   const MAX_SPEED = 6500;
   const lampYBase = () => H * 0.3;
 
-  function clientToWorld(clientX, clientY) {
-    return { x: clientX - W / 2, y: H / 2 - clientY };
-  }
-
-  function setTarget(clientX, clientY) {
-    const p = clientToWorld(clientX, clientY);
-    state.tx = p.x;
-    const bob = (0.5 - clientY / H) * H * 0.055;
-    state.ty = lampYBase() + bob;
-    state.py = p.y;
-    state.hasPointer = true;
-    state.lastMove = performance.now();
-  }
-
-  window.addEventListener(
-    "pointermove",
-    (e) => {
-      if (e.pointerType === "touch") return;
-      setTarget(e.clientX, e.clientY);
-    },
-    { passive: true }
-  );
-  window.addEventListener(
-    "touchmove",
-    (e) => {
-      const t = e.touches[0];
-      if (t) setTarget(t.clientX, t.clientY);
-    },
-    { passive: true }
-  );
-  window.addEventListener(
-    "pointerdown",
-    (e) => {
-      if (e.pointerType === "touch") setTarget(e.clientX, e.clientY);
-    },
-    { passive: true }
-  );
-
   function idleDrift(now) {
-    if (state.hasPointer && now - state.lastMove < 2400) return;
     const t = (now - state.t0) / 1000;
     state.tx = Math.sin(t * 0.48) * W * 0.28;
     state.ty = lampYBase() + Math.sin(t * 0.33 + 1.1) * H * 0.022;
