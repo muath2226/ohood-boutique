@@ -11,6 +11,27 @@ import * as THREE from "three";
 
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+/* ---------- Unity-style SmoothDamp (frame-rate independent) ---------- */
+function smoothDamp(current, target, velRef, smoothTime, maxSpeed, dt) {
+  smoothTime = Math.max(0.0001, smoothTime);
+  const omega = 2 / smoothTime;
+  const x = omega * dt;
+  const exp = 1 / (1 + x + 0.48 * x * x + 0.235 * x * x * x);
+  let change = current - target;
+  const originalTo = target;
+  const maxChange = maxSpeed * smoothTime;
+  change = Math.max(-maxChange, Math.min(maxChange, change));
+  target = current - change;
+  const temp = (velRef.v + omega * change) * dt;
+  velRef.v = (velRef.v - omega * temp) * exp;
+  let output = target + (change + temp) * exp;
+  if (originalTo - current > 0 === output > originalTo) {
+    output = originalTo;
+    velRef.v = (output - originalTo) / dt;
+  }
+  return output;
+}
+
 function ready(fn) {
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", fn, { once: true });
@@ -210,36 +231,60 @@ ready(() => {
   glowSprite.position.set(0, -30, 16);
   lamp.add(glowSprite);
 
-  /* ----- fixed lamp (no mouse follow, no drift) ----- */
+  /* ----- motion: lamp follows pointer (smooth, no idle drift) ----- */
+  const state = {
+    tx: 0,
+    ty: H * 0.3,
+    x: 0,
+    y: H * 0.3,
+    vx: { v: 0 },
+    vy: { v: 0 },
+    tilt: 0,
+    vTilt: { v: 0 },
+    py: 0,
+  };
+
+  const SMOOTH_X = 0.14;
+  const SMOOTH_Y = 0.18;
+  const SMOOTH_TILT = 0.12;
+  const MAX_SPEED = 6500;
   const lampYBase = () => H * 0.3;
 
-  function placeLamp() {
-    const x = 0; // center
-    const y = lampYBase();
-    const py = y - 120; // light pool slightly below fixture
-
-    const topY = H / 2;
-    const cordLen = Math.max(28, topY - y + 10);
-    cord.scale.y = cordLen;
-    cord.position.y = cordLen / 2 + 8;
-
-    lamp.position.set(x, y, 180);
-    lamp.rotation.z = 0;
-    lamp.rotation.x = 0.1;
-
-    lampKey.position.set(x, y - 18, 240);
-    lampFill.position.set(x, y - 48, 160);
-
-    const poolWorldY = THREE.MathUtils.clamp(py, -H * 0.42, H * 0.35);
-    const u = (x + W / 2) / W;
-    const v = (poolWorldY + H / 2) / H;
-    veilUniforms.uLight.value.set(
-      THREE.MathUtils.clamp(u, 0.04, 0.96),
-      THREE.MathUtils.clamp(v, 0.06, 0.94)
-    );
-    veilUniforms.uRadius.value = 0.42 + Math.min(W, H) * 0.00006;
-    veilUniforms.uAspect.value = W / Math.max(H, 1);
+  function clientToWorld(clientX, clientY) {
+    return { x: clientX - W / 2, y: H / 2 - clientY };
   }
+
+  function setTarget(clientX, clientY) {
+    const p = clientToWorld(clientX, clientY);
+    state.tx = p.x;
+    const bob = (0.5 - clientY / H) * H * 0.055;
+    state.ty = lampYBase() + bob;
+    state.py = p.y;
+  }
+
+  window.addEventListener(
+    "pointermove",
+    (e) => {
+      if (e.pointerType === "touch") return;
+      setTarget(e.clientX, e.clientY);
+    },
+    { passive: true }
+  );
+  window.addEventListener(
+    "touchmove",
+    (e) => {
+      const t = e.touches[0];
+      if (t) setTarget(t.clientX, t.clientY);
+    },
+    { passive: true }
+  );
+  window.addEventListener(
+    "pointerdown",
+    (e) => {
+      if (e.pointerType === "touch") setTarget(e.clientX, e.clientY);
+    },
+    { passive: true }
+  );
 
   function onResize() {
     W = window.innerWidth;
@@ -254,23 +299,58 @@ ready(() => {
     veilMesh.geometry.dispose();
     veilMesh.geometry = new THREE.PlaneGeometry(W, H);
     veilUniforms.uAspect.value = W / Math.max(H, 1);
-    placeLamp();
+    state.ty = lampYBase();
   }
   window.addEventListener("resize", onResize);
   renderer.setSize(W, H, false);
-  placeLamp();
 
   // native DOM stays sharp — no html-in-canvas downscale
   document.body.classList.add("lumen-webgl", "lumen-dom-live");
   requestAnimationFrame(() => document.body.classList.add("lumen-ready"));
 
-  /* ----- render loop (static scene; still need rAF for WebGL) ----- */
-  function frame() {
+  /* ----- animation ----- */
+  let prev = performance.now();
+
+  function frame(now) {
+    const dt = Math.min(0.05, (now - prev) / 1000);
+    prev = now;
+
+    state.x = smoothDamp(state.x, state.tx, state.vx, SMOOTH_X, MAX_SPEED, dt);
+    state.y = smoothDamp(state.y, state.ty, state.vy, SMOOTH_Y, MAX_SPEED * 0.55, dt);
+
+    const targetTilt = THREE.MathUtils.clamp(-state.vx.v * 0.00045, -0.38, 0.38);
+    state.tilt = smoothDamp(state.tilt, targetTilt, state.vTilt, SMOOTH_TILT, 8, dt);
+
+    const topY = H / 2;
+    const cordLen = Math.max(28, topY - state.y + 10);
+    cord.scale.y = cordLen;
+    cord.position.y = cordLen / 2 + 8;
+
+    lamp.position.set(state.x, state.y, 180);
+    lamp.rotation.z = state.tilt;
+    lamp.rotation.x = 0.1;
+
+    lampKey.position.set(state.x, state.y - 18, 240);
+    lampFill.position.set(state.x, state.y - 48, 160);
+
+    const poolWorldY = THREE.MathUtils.clamp(
+      state.py * 0.3 + (state.y - 90) * 0.5,
+      -H * 0.42,
+      H * 0.35
+    );
+    const u = (state.x + W / 2) / W;
+    const v = (poolWorldY + H / 2) / H;
+    veilUniforms.uLight.value.set(
+      THREE.MathUtils.clamp(u, 0.04, 0.96),
+      THREE.MathUtils.clamp(v, 0.06, 0.94)
+    );
+    veilUniforms.uRadius.value = 0.42 + Math.min(W, H) * 0.00006;
+    veilUniforms.uAspect.value = W / Math.max(H, 1);
+
     renderer.render(scene, camera);
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
 
-  // no capture needed — keep hook as no-op for app.js compatibility
   window.ohoodLumenRecapture = () => {};
 });

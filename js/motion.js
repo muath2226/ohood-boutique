@@ -1,5 +1,6 @@
-/* بوتيك عهود — motion helpers (cursor, tilt, bursts).
-   Lamp + light: js/lumen-three.js (Three.js + HTML-in-canvas)
+/* بوتيك عهود — motion helpers (tilt, bursts).
+   Lamp + light: js/lumen-three.js
+   System cursor only (no custom cursor ring).
 */
 
 (function () {
@@ -29,54 +30,6 @@
     };
     window.addEventListener("scroll", update, { passive: true });
     update();
-  }
-
-  /* ---------- Custom cursor ---------- */
-  function bindCursor() {
-    if (reduced || !finePointer) return;
-
-    const dot = document.createElement("div");
-    const ring = document.createElement("div");
-    dot.className = "cursor-dot";
-    ring.className = "cursor-ring";
-    document.body.append(dot, ring);
-    document.body.classList.add("has-cursor");
-
-    let x = 0,
-      y = 0,
-      rx = 0,
-      ry = 0;
-
-    window.addEventListener(
-      "mousemove",
-      (e) => {
-        x = e.clientX;
-        y = e.clientY;
-        dot.style.left = x + "px";
-        dot.style.top = y + "px";
-      },
-      { passive: true }
-    );
-
-    function loop() {
-      rx += (x - rx) * 0.18;
-      ry += (y - ry) * 0.18;
-      ring.style.left = rx + "px";
-      ring.style.top = ry + "px";
-      requestAnimationFrame(loop);
-    }
-    loop();
-
-    const hoverSel =
-      "a, button, .product-card, .cat-card, .filter-chip, .icon-btn, .mood-chip, input, select";
-    document.addEventListener("mouseover", (e) => {
-      if (e.target.closest(hoverSel)) document.body.classList.add("cursor-hover");
-    });
-    document.addEventListener("mouseout", (e) => {
-      if (e.target.closest(hoverSel)) document.body.classList.remove("cursor-hover");
-    });
-    document.addEventListener("mousedown", () => document.body.classList.add("cursor-click"));
-    document.addEventListener("mouseup", () => document.body.classList.remove("cursor-click"));
   }
 
   /* ---------- Hero word split ---------- */
@@ -270,7 +223,9 @@
   document.addEventListener("DOMContentLoaded", () => {
     runIntro();
     bindScrollProgress();
-    bindCursor();
+    // normal system cursor — custom ring disabled
+    document.body.classList.remove("has-cursor");
+    document.querySelectorAll(".cursor-dot, .cursor-ring").forEach((el) => el.remove());
     spawnSparkles();
     bindMagnetic();
     observeSections();
