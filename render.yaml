@@ -13,3 +13,8 @@ services:
       - path: /*
         name: X-Frame-Options
         value: SAMEORIGIN
+    # Serve homepage at / (assets like /css/* still resolve as real files)
+    routes:
+      - type: rewrite
+        source: /
+        destination: /index.html
