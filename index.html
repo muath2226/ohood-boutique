@@ -19,6 +19,17 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='80'>ع</text></svg>" />
   </head>
   <body class="rtl light-scene">
+    <script>
+      /* Restore scene preference ASAP to avoid dark flash */
+      (function () {
+        try {
+          if (localStorage.getItem("ohood-scene") === "bright") {
+            document.body.classList.remove("light-scene");
+            document.body.classList.add("scene-bright");
+          }
+        } catch (e) {}
+      })();
+    </script>
     <!-- Three.js WebGL: HTML-in-canvas + physical lamp light -->
     <canvas id="lumen-gl" aria-hidden="true"></canvas>
 
@@ -63,6 +74,26 @@
             <a class="nav-link" href="#story" data-i18n="nav.about">قصتنا</a>
           </nav>
           <button class="lang-toggle" id="langToggle" type="button">EN</button>
+          <button
+            class="scene-toggle"
+            id="sceneToggle"
+            type="button"
+            data-mode="lamp"
+            aria-pressed="false"
+            aria-label="التبديل إلى الموقع المضيء بالكامل"
+            title="الموقع مضيء بالكامل"
+          >
+            <svg class="scene-icon scene-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <svg class="scene-icon scene-icon-lamp" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2v4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M8 10c0-2.2 1.8-4 4-4s4 1.8 4 4c0 1.5-.8 2.8-2 3.5V16H10v-2.5c-1.2-.7-2-2-2-3.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M9 16h6M10 19h4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span data-scene-label>مضيء</span>
+          </button>
           <button class="icon-btn" id="wishBtn" aria-label="المفضلة">
             <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             <span class="badge-count" data-wish-count hidden>0</span>

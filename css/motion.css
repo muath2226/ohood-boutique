@@ -1241,6 +1241,18 @@ body.lumen-ready #lumen-gl {
   opacity: 1;
 }
 
+/* Full bright site: hide WebGL stage (veil + lamp) */
+body.scene-bright #lumen-gl {
+  opacity: 0 !important;
+  visibility: hidden;
+  transition: opacity 0.55s var(--ease), visibility 0.55s;
+}
+
+body.scene-bright {
+  /* ensure cream boutique palette wins when leaving dark stage */
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
 /* Native DOM always sharp — never hidden for capture */
 body.lumen-webgl #site-root,
 body.lumen-webgl.lumen-ready #site-root,
@@ -1252,6 +1264,72 @@ body.lumen-webgl.lumen-dom-live #site-root {
 @media (prefers-reduced-motion: reduce) {
   #lumen-gl {
     display: none !important;
+  }
+}
+
+/* ---------- Scene toggle (مضيء / قاتم) ---------- */
+.scene-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.7rem 0.4rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.scene-toggle:hover {
+  border-color: var(--espresso, #3a2f28);
+  background: var(--espresso, #3a2f28);
+  color: var(--ivory, #f5efe6);
+}
+
+.scene-toggle .scene-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+/* Lamp mode: show sun (click → bright). Bright mode: show lamp (click → dark). */
+.scene-toggle .scene-icon-lamp {
+  display: none;
+}
+.scene-toggle[data-mode="bright"] .scene-icon-sun {
+  display: none;
+}
+.scene-toggle[data-mode="bright"] .scene-icon-lamp {
+  display: block;
+}
+
+body.light-scene .scene-toggle {
+  color: var(--gold-bright, #d4b483);
+  border-color: rgba(212, 180, 131, 0.3);
+}
+
+body.light-scene .scene-toggle:hover {
+  background: rgba(212, 180, 131, 0.15);
+  border-color: rgba(212, 180, 131, 0.55);
+  color: #f5efe6;
+}
+
+@media (max-width: 720px) {
+  .scene-toggle [data-scene-label] {
+    display: none;
+  }
+  .scene-toggle {
+    padding: 0.45rem;
+    width: 38px;
+    height: 38px;
+    justify-content: center;
+    border-radius: 50%;
   }
 }
 

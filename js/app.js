@@ -147,6 +147,11 @@ function applyI18n() {
   const langBtn = $("#langToggle");
   if (langBtn) langBtn.textContent = state.lang === "en" ? "العربية" : "EN";
 
+  // Scene mode button (مضيء / قاتم) — labels live in lumen-three.js
+  if (typeof window.ohoodLumenUpdateLabels === "function") {
+    window.ohoodLumenUpdateLabels();
+  }
+
   // stickers + marquee by language
   const stickers = {
     1: { ar: "new drop ✦", en: "new drop ✦" },
